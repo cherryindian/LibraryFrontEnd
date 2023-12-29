@@ -45,7 +45,9 @@ public class IssueBooks extends JPanel {
     JLabel ReturnDatel;
     JButton borrowBook;
     private JTable issueBookTable;
+    private JTable userTable;
     private JScrollPane issueBookScrollPane;
+    private JScrollPane userTabScrollPane;
 
     static String borrowBookString = "http://localhost:8080/library_test/addborrow";
 
@@ -65,16 +67,29 @@ public class IssueBooks extends JPanel {
 
         UserIDl = new JLabel("UserID");
         UserIDl.setBounds(50, 20, 200, 30);
+        UserIDl.setForeground(Color.WHITE); // Set text color to white
+        UserIDl.setFont(new Font("Arial", Font.BOLD, 16)); // Set font (adjust the font style and size as needed)
+
         BookIDl = new JLabel("Book ID");
         BookIDl.setBounds(50, 60, 200, 30);
+        BookIDl.setForeground(Color.WHITE);
+        BookIDl.setFont(new Font("Arial", Font.BOLD, 16));
+
         IssueDatel = new JLabel("Issue Date");
         IssueDatel.setBounds(50, 100, 200, 30);
+        IssueDatel.setForeground(Color.WHITE);
+        IssueDatel.setFont(new Font("Arial", Font.BOLD, 16));
+
         ReturnDatel = new JLabel("Return Date");
         ReturnDatel.setBounds(50, 140, 200, 30);
+        ReturnDatel.setForeground(Color.WHITE);
+        ReturnDatel.setFont(new Font("Arial", Font.BOLD, 16));
 
         borrowBook = new JButton("Borrow Book");
-        borrowBook.setBounds(250, 380, 200, 30);
+        borrowBook.setBounds(50, 180, 200, 30);
         borrowBook.addActionListener(e -> borrowBook());
+
+        createUserTable();
 
         try {
             issueBookTable();
@@ -82,7 +97,6 @@ public class IssueBooks extends JPanel {
             System.out.println("Error in issue books table.");
         }
 
-        setOpaque(false);
         setLayout(null);
         add(UserID);
         add(BookID);
@@ -95,7 +109,7 @@ public class IssueBooks extends JPanel {
         add(borrowBook);
 
         setBounds(155, 55, 2000, 2000);
-        setBackground(new Color(255, 0, 0));
+        setBackground(new Color(0, 0, 0));
         setVisible(true);
     }
 
@@ -119,7 +133,8 @@ public class IssueBooks extends JPanel {
             return;
         }
         if (issueDate == "ERROR" || returnDate == "ERROR" || parsedReturnDate.before(currentDate)
-                || parsedIssueDate.before(parsedReturnDate)) {
+                || parsedReturnDate.before(parsedIssueDate)) {
+            System.out.println(currentDate.before(parsedReturnDate));
             JOptionPane.showMessageDialog(Display.mainPanel, "Enter correct date", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -171,6 +186,8 @@ public class IssueBooks extends JPanel {
         try {
             httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             updateIssueBookTable();
+            Books.updateBook(b.bookName, b.bookId, b.edition, b.quantity - 1, b.summary, b.category, b.deweyDecimal,
+                    b.author, b.imageUrl);
             JOptionPane.showMessageDialog(Display.mainPanel, "Borrow successfully!", "Success",
                     JOptionPane.INFORMATION_MESSAGE);
 
@@ -300,8 +317,8 @@ public class IssueBooks extends JPanel {
         issueBookScrollPane = new JScrollPane(issueBookTable);
 
         issueBookTable.setBounds(200, 20, 700, 300);
-        issueBookTable.setBackground(Color.WHITE);
-        issueBookTable.setForeground(Color.BLACK);
+        issueBookTable.setBackground(Color.BLACK);
+        issueBookTable.setForeground(Color.WHITE);
         issueBookTable.setRowHeight(issueBookTable.getRowHeight() + 15);
         for (int i = 0; i < columns.length; i++) {
             issueBookTable.getColumnModel().getColumn(i).setPreferredWidth(200);
@@ -337,6 +354,92 @@ public class IssueBooks extends JPanel {
             parent.revalidate();
             parent.repaint();
         }
+    }
+
+    private void createUserTable() {
+        String column[] = { "User Id", "Name", "Email", "Ph no." };
+        ArrayList<ArrayList<String>> rows = new ArrayList<>();
+        for (int i = 0; i < Users.usercount - 1; i++) {
+            Users user = new Users(Integer.toString(i + 1));
+            ArrayList<String> row = new ArrayList<>();
+            row.add(user.userID);
+            row.add(user.userName);
+            row.add(user.userMail);
+            row.add(user.userPhno);
+            rows.add(row);
+        }
+
+        String[][] rowsArray = new String[rows.size()][];
+        for (int i = 0; i < rows.size(); i++) {
+            rowsArray[i] = rows.get(i).toArray(new String[0]);
+        }
+
+        userTable = new JTable(rowsArray, column) {
+            @Override
+            public TableCellRenderer getCellRenderer(int row, int column) {
+                return new DefaultTableCellRenderer();
+            }
+
+            @Override
+            public TableCellEditor getCellEditor(int row, int column) {
+                return new TableCellEditor() {
+                    @Override
+                    public Component getTableCellEditorComponent(JTable table, Object value, boolean isSelected,
+                            int row, int column) {
+                        return null;
+                    }
+
+                    @Override
+                    public Object getCellEditorValue() {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean isCellEditable(EventObject anEvent) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean shouldSelectCell(EventObject anEvent) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean stopCellEditing() {
+                        return true;
+                    }
+
+                    @Override
+                    public void cancelCellEditing() {
+                    }
+
+                    @Override
+                    public void addCellEditorListener(CellEditorListener l) {
+                    }
+
+                    @Override
+                    public void removeCellEditorListener(CellEditorListener l) {
+                    }
+                };
+            }
+        };
+
+        userTabScrollPane = new JScrollPane(userTable);
+        userTable.setBounds(600, 450, 700, 300);
+        userTable.setBackground(Color.BLACK);
+        userTable.setForeground(Color.WHITE);
+        userTable.setRowHeight(userTable.getRowHeight() + 15);
+        for (int i = 0; i < column.length; i++) {
+            userTable.getColumnModel().getColumn(i).setPreferredWidth(200);
+        }
+
+        userTabScrollPane.setBounds(450, 400, 600, 300);
+        Font tableFont = new Font("Arial", Font.PLAIN, 18); // Adjust the font size as needed
+        userTable.setFont(tableFont);
+        JTableHeader header = userTable.getTableHeader();
+        header.setFont(tableFont);
+        add(userTabScrollPane);
+
     }
 
 }

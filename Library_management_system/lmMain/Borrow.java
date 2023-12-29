@@ -33,7 +33,7 @@ public class Borrow {
             borrowCount = (((String) responsecount.body()).split("\\},\\{").length);
 
         } catch (Exception e) {
-            System.out.println("Error in getting the count of users");
+            System.out.println("Error in getting the count of borrows");
         }
     }
 
@@ -116,7 +116,7 @@ public class Borrow {
     }
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        int targetId = 3;
+        int targetId = 1;
         Borrow b = new Borrow(targetId);
 
         System.out.println("Borrow ID: " + b.borrowId);

@@ -5,7 +5,7 @@ import lmDisplay.Display;
 public class Main {
 
     public static void main(String[] args) {
-        new Display();
+        new Display("1", "ADMIN");
     }
 
 }

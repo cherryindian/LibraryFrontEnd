@@ -15,11 +15,14 @@ import javax.swing.JPanel;
 public class SidePanel extends JPanel {
     CardLayout layout = (CardLayout) Display.mainPanel.getLayout();
 
-    SidePanel() {
+    SidePanel(String userRole) {
         setLayout(new BorderLayout());
 
         JButton Home = new JButton("Home Page");
         setButtonProperties(Home, Display.Home);
+
+        // JButton Borrow = new JButton("Borrowed");
+        // setButtonProperties(Borrow, Display.borrow);
 
         JButton Issue = new JButton("Issue Book");
         setButtonProperties(Issue, Display.Issue);
@@ -27,21 +30,21 @@ public class SidePanel extends JPanel {
         JButton AddBooksButton = new JButton("Add books");
         setButtonProperties(AddBooksButton, Display.addbook);
 
-        JButton AddUsersButton = new JButton("Add Users");
-        setButtonProperties(AddUsersButton, Display.adduser);
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.Y_AXIS));
 
         Dimension buttonSize = new Dimension(145, 65);
         Home.setPreferredSize(buttonSize);
+        // Borrow.setPreferredSize(buttonSize);
         Issue.setPreferredSize(buttonSize);
         AddBooksButton.setPreferredSize(buttonSize);
-        AddUsersButton.setPreferredSize(buttonSize);
 
         buttonPanel.add(Home);
-        buttonPanel.add(Issue);
-        buttonPanel.add(AddBooksButton);
-        buttonPanel.add(AddUsersButton);
+        // buttonPanel.add(Borrow);
+        if (userRole.equals("ADMIN")) {
+            buttonPanel.add(Issue);
+            buttonPanel.add(AddBooksButton);
+        }
         buttonPanel.setBackground(new Color(0, 0, 0));
 
         add(buttonPanel, BorderLayout.CENTER);

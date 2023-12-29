@@ -134,7 +134,7 @@ public class Books {
 
         try {
             httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
+            ++bookCount;
         } catch (Exception e) {
             System.out.println("Error in add");
         }

@@ -81,24 +81,52 @@ public class AddBooks extends JPanel {
         ImageField = new JTextField();
         ImageField.setBounds(250, 340, 200, 30);
 
+        Font labelFont = new Font("Arial", Font.BOLD, 15);
+
         bookNameLabel = new JLabel("Book Name");
         bookNameLabel.setBounds(50, 20, 200, 30);
+        bookNameLabel.setForeground(Color.WHITE);
+        bookNameLabel.setFont(labelFont);
+
         bookIdLabel = new JLabel("Book ID");
         bookIdLabel.setBounds(50, 60, 200, 30);
+        bookIdLabel.setForeground(Color.WHITE);
+        bookIdLabel.setFont(labelFont);
+
         editionLabel = new JLabel("Edition");
         editionLabel.setBounds(50, 100, 200, 30);
+        editionLabel.setForeground(Color.WHITE);
+        editionLabel.setFont(labelFont);
+
         quantityLabel = new JLabel("Quantity");
         quantityLabel.setBounds(50, 140, 200, 30);
+        quantityLabel.setForeground(Color.WHITE);
+        quantityLabel.setFont(labelFont);
+
         summaryLabel = new JLabel("Summary (max " + SUMMARY_LIMIT + " characters)");
-        summaryLabel.setBounds(50, 180, 200, 30);
+        summaryLabel.setBounds(50, 180, 300, 30);
+        summaryLabel.setForeground(Color.WHITE);
+        summaryLabel.setFont(labelFont);
+
         categoryLabel = new JLabel("Category");
         categoryLabel.setBounds(50, 220, 200, 30);
+        categoryLabel.setForeground(Color.WHITE);
+        categoryLabel.setFont(labelFont);
+
         deweyDecimalLabel = new JLabel("Dewey Decimal");
         deweyDecimalLabel.setBounds(50, 260, 200, 30);
+        deweyDecimalLabel.setForeground(Color.WHITE);
+        deweyDecimalLabel.setFont(labelFont);
+
         authorLabel = new JLabel("Author");
         authorLabel.setBounds(50, 300, 200, 30);
+        authorLabel.setForeground(Color.WHITE);
+        authorLabel.setFont(labelFont);
+
         ImageLabel = new JLabel("Image Link");
         ImageLabel.setBounds(50, 340, 200, 30);
+        ImageLabel.setForeground(Color.WHITE);
+        ImageLabel.setFont(labelFont);
 
         addButton = new JButton("Add Book");
         addButton.setBounds(250, 380, 200, 30);
